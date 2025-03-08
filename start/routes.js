@@ -23,8 +23,12 @@ Route.get('/', () => {
 Route.post("/register", "AuthController.register")
 Route.post("/authenticate", "AuthController.authenticate")
 
-Route.get("/app", "AppController.index").middleware(["auth"])
+// Route.group(() => {
+//   Route.resource("address", "AddressController").apiOnly()
+// }).middleware(["auth"])
 
-Route.group(() => {
-  Route.resource("address", "AddressController").apiOnly()
-}).middleware(["auth"])
+Route.group(()=> {
+  Route.resource("user", "AuthController")
+    .apiOnly()
+    .except("store")
+})
