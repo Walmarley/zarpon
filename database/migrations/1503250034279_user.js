@@ -11,11 +11,12 @@ class UserSchema extends Schema {
       table.string('password', 60).notNullable()
       table.string('username', 80).notNullable()
       table.string('address', 500).notNullable()  
+      table.enum('role', ['user', 'admin']).defaultTo('user').notNullable()
       table.timestamps()
     })
   }
 
-  down () {
+ down () {
     this.drop('users')
   }
 }

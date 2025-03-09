@@ -16,19 +16,13 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.get('/', () => {
-  return { greeting: 'Hello world in JSON' }
-})
-
-Route.post("/register", "AuthController.register")
+Route.post("/register", "AuthController.register").middleware(["auth"]);
 Route.post("/authenticate", "AuthController.authenticate")
-
-// Route.group(() => {
-//   Route.resource("address", "AddressController").apiOnly()
-// }).middleware(["auth"])
 
 Route.group(()=> {
   Route.resource("user", "AuthController")
-    .apiOnly()
-    .except("store")
+  Route.get("/user", "AuthController.index").middleware(["auth"]);
+  Route.get("/user/:id", "AuthController.show").middleware(["auth"]);
+  Route.put("/user/:id", "AuthController.update").middleware(["auth"]);
+  Route.delete("/user/:id", "AuthController.destroy").middleware(["auth"]);
 })
