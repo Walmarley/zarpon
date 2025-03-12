@@ -4,13 +4,6 @@ const User = use('App/Models/User')
 
 class AuthController {
 
-    // async authenticate({request, auth}){
-    //     const {email, password} = request.all()
-    //     const token = await auth.attempt(email, password)
-    
-    //     return token
-    // }
-
     async authenticate({ request, auth, response }) {
         const { email, password } = request.all();
     
@@ -24,12 +17,19 @@ class AuthController {
         }
     }
 
-    // async register({ request}) {
-    //     const data = request.only(['username', 'email', 'password', 'address'])
-    //     const user = await User.create(data)
-
-    //     return user
-    // }
+    async logout({ auth, response }) {
+        try {
+          await auth.authenticator('api').revokeTokens()
+      
+          return response.status(200).send({
+            message: 'Logout realizado com sucesso.',
+          })
+        } catch (error) {
+          return response.status(500).send({
+            error: 'Erro ao realizar logout.',
+          })
+        }
+      }
 
     async register({ request, auth, response }) {
         const data = request.only(['username', 'email', 'password', 'address', 'role']);
@@ -65,16 +65,6 @@ class AuthController {
 
         return user
     }
-
-    // async update ({ params, request }) {
-    //     const user = await User.findOrFail(params.id)
-    //     const data = request.only(['username', 'email', 'password', 'address'])
-
-    //     user.merge(data)
-    //     await user.save()
-
-    //     return user
-    // }
 
     async update({ params, request, auth, response }) {
         const user = await User.findOrFail(params.id);

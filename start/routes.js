@@ -17,6 +17,7 @@
 const Route = use('Route')
 
 Route.post("/register", "AuthController.register").middleware(["auth"]);
+Route.post('/logout', 'AuthController.logout').middleware('auth')
 Route.post("/authenticate", "AuthController.authenticate")
 
 Route.group(()=> {
